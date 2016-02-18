@@ -4,6 +4,11 @@ import (
 	"time"
 )
 
+const (
+	Day  = 24 * time.Hour
+	Week = 7 * Day
+)
+
 // SleepUntil sleeps until the specified time.
 func SleepUntil(t time.Time) {
 	now := time.Now()
