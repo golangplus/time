@@ -18,3 +18,11 @@ func SleepUntil(t time.Time) {
 	}
 	time.Sleep(t.Sub(now))
 }
+
+// NowFunc has the signature of time.Now().
+type NowFunc func() time.Time
+
+// PresetNow Returns a NowFunc which returns the specific time.
+func PresetNow(t time.Time) NowFunc {
+	return func() time.Time { return t }
+}

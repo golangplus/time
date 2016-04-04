@@ -18,3 +18,9 @@ func TestSleepUntil_SleepBefore(t *testing.T) {
 	SleepUntil(start)
 	assert.ValueShould(t, "now", time.Now(), start.Add(time.Millisecond).After, "SleepUntil returns later than expected")
 }
+
+func TestPresetNow(t *testing.T) {
+	tm := time.Now().Add(Day)
+	now := PresetNow(tm)
+	assert.Equal(t, "now", now(), tm)
+}
