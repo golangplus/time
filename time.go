@@ -1,6 +1,7 @@
 package timep
 
 import (
+	"context"
 	"time"
 )
 
@@ -17,6 +18,25 @@ func SleepUntil(t time.Time) {
 		return
 	}
 	time.Sleep(t.Sub(now))
+}
+
+// SleepUntilWithCancel sleep until a specify time and returns nil, unless
+// the context is cancelled, in which case ctx.Err() is returned.
+func SleepUntilWithCancel(ctx context.Context, t time.Time) error {
+	now := time.Now()
+	if now.After(t) {
+		// Already after, directly return
+		return nil
+	}
+	timer := time.NewTimer(t.Sub(now))
+	defer timer.Stop()
+
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	case <-timer.C:
+		return nil
+	}
 }
 
 // NowFunc has the signature of time.Now().
